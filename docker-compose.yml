@@ -1,0 +1,29 @@
+version: "3"
+services:
+  app:
+    image: stefanijac182019/kiii-project-182019:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kiii-project-182019
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5432/forum
+    ports:
+      - 8000:8080
+      - 8080:8080
+    depends_on:
+      - database
+
+  database:
+    image: postgres
+    container_name: kiii-database
+    environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=stefanijac
+        - POSTGRES_DB=forum
+    ports:
+        - 5432:5432
+    volumes:
+        - postgres-data:/var/lib/postgresql/data
+volumes:
+  postgres-data:
