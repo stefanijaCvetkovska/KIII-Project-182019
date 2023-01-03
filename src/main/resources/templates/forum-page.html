@@ -1,0 +1,100 @@
+<div class="container">
+    <div class="row">
+        <div class="col-9">
+            <div class="my-3">
+                <div class="card text-white bg-dark">
+                    <h4 class="card-body">Discussions</h4>
+                </div>
+            </div>
+            <div th:each="topic: ${threads}" class="my-3">
+                <div class="card">
+                    <h5 class="card-header" th:text="${topic.title}"></h5>
+                    <div class="card-body">
+                        <span class="badge bg-primary" th:text="'Created: ' + ' ' + ${topic.dateCreated}"></span>
+                        <span class="badge bg-secondary" th:text="'Category: ' + ' ' + ${topic.category.name}"></span>
+                        <p class="card-text my-4" th:text="${topic.text}"></p>
+                        <div class="d-flex">
+                            <form method="POST" th:action="@{'/delete/{id}' (id=${topic.id})}">
+                                <button type="submit" class="btn btn-danger">
+                                    Delete
+                                </button>
+                            </form>
+                            <a th:href="@{'/{id}' (id=${topic.id})}" class="btn btn-info mx-4">
+                                Edit
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-3 my-5">
+                <h2>Add discussion</h2>
+                <div class="form-floating">
+                    <form th:method="POST"
+                          th:action="@{'/add/{id}' (id=${topic?.id})}">
+                        <div class="my-2">
+                            <label>Title</label>
+                            <input type="text"
+                                   class="form-control"
+                                   name="title"
+                                   th:value="${topic?.title}"
+                                   required>
+                        </div>
+                        <div class="my-2">
+                            <label>Category</label>
+                            <select name="category" class="form-control">
+                                <option th:if="${topic} != null"
+                                        th:selected="${topic.getCategory() != null &&
+                                topic.getCategory().getId() == cat.getId()}"
+                                        th:each="cat : ${categories}"
+                                        th:value="${cat.getId()}"
+                                        th:text="${cat.getName()}">
+                                </option>
+                                <option th:if="${topic} == null"
+                                        th:each="cat : ${categories}"
+                                        th:value="${cat.getId()}"
+                                        th:text="${cat.getName()}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="my-2">
+                            <label>Text</label>
+                            <textarea rows="3"
+                                      style="height:100%"
+                                      class="form-control"
+                                      name="text"
+                                      th:text="${topic?.text}"
+                                      required></textarea>
+                            </textarea>
+                        </div>
+                        <button class="btn btn-success" type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="my-3">
+                <div class="card text-white bg-success">
+                    <h4 class="card-body">Categories</h4>
+                </div>
+            </div>
+            <div>
+                <a class="card btn text-dark bg-light text-decoration-none my-2 text-start" href="/">
+                    All
+                </a>
+            </div>
+
+            <form th:action="@{'/?categoryId=' + ${categoryId}}">
+                <div class="d-grid gap-2" th:each="category: ${categories}">
+                    <button class="card btn text-dark bg-light text-decoration-none my-2"
+                            id="categoryId"
+                            name="categoryId"
+                            type="submit"
+                            th:value="${category.id}"
+                            th:text="${category.name}">
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
