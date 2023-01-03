@@ -5,8 +5,8 @@
 replicaCount: 1
 
 image:
-  repository: nginx
-  pullPolicy: IfNotPresent
+  repository: stefanijac182019/kiii-project-182019
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
@@ -38,7 +38,7 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 80
+  port: 8080
 
 ingress:
   enabled: false
@@ -80,3 +80,12 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+postgresql:
+  enabled: true
+  global:
+    postgresql:
+      postgresqlDatabase: "kiii-database"
+      postgresqlPassword: "stefanijac"
+      postgresqlUsername: "postgres"
+      servicePort: "5432"
