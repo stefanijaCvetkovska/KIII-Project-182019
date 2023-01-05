@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping(value = {"/", "/home"})
 @AllArgsConstructor
 public class HomeController {
     private final TopicService topicService;
